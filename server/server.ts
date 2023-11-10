@@ -1,7 +1,7 @@
 import ws from "@fastify/websocket";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import fastify from "fastify";
-import { appRouter } from "./router/index.ts";
+import { appRouter } from "./router/index.js";
 import { platform } from "os";
 import { spawn } from "node-pty";
 
