@@ -1,38 +1,54 @@
 import { VModel, atom, reflect, usePaginationStack } from "@cn-ui/reactive";
 import { trpc } from "../../api";
-
+import { SolidListTable } from "../../basic/ListTable";
 export const Explorer = () => {
-  const pwd = atom("");
-  /** 用户输入的属性 */
-  const pathString = reflect(() => pwd());
-  const folder = usePaginationStack((page, maxPage) => {
-    console.log(pwd());
-    return trpc.file.listDir.query({ page, dir: pwd() }).then((res) => {
-      maxPage(Math.ceil(res.count / 10));
-      pwd(res.dir);
-      return res.list;
-    });
-  }, {});
+    const pwd = atom("");
+    /** 用户输入的属性 */
+    const pathString = reflect(() => pwd());
+    const folder = usePaginationStack((page, maxPage) => {
+        return trpc.file.listDir.query({ page, dir: pwd() }).then((res) => {
+            maxPage(Math.ceil(res.count / 10));
+            pwd(res.dir);
+            return res.list;
+        });
+    }, {});
+    const itemList = reflect(() => folder.dataSlices().flat());
 
-  return (
-    <div>
-      <input type="text" {...VModel(pathString, { valueName: "input" })} />
-      <button
-        onclick={() => {
-          pwd(pathString);
-          folder.refetch();
-        }}
-      >
-        跳转
-      </button>
-      <ul>
-        {folder.currentData()?.map((i) => {
-          return <li>{i.name}</li>;
-        })}
-      </ul>
-      {folder.currentPage() <= folder.maxPage() && (
-        <div onclick={() => folder.next()}>加载更多</div>
-      )}
-    </div>
-  );
+    return (
+        <section>
+            <input
+                type="text"
+                {...VModel(pathString, { valueName: "input" })}
+            />
+            <button
+                onclick={() => {
+                    pwd(pathString);
+                    folder.resetStack();
+                }}>
+                跳转
+            </button>
+            <SolidListTable
+                style="height:300px;width:300px"
+                records={itemList()}
+                widthMode="standard"
+                dragHeaderMode="column"
+                select={{
+                    disableSelect: false,
+                    headerSelectMode: "inline",
+                }}
+                columns={[
+                    { field: "name", title: "名称", width: 200, sort: true },
+                    {
+                        field: "birthtime",
+                        title: "创建日期",
+                        width: 200,
+                        sort: true,
+                    },
+                ]}></SolidListTable>
+            {folder.currentPage() < folder.maxPage() && (
+                <div onclick={() => folder.next()}>加载更多</div>
+            )}
+            {folder.currentPage() === folder.maxPage() && <div>没有更多了</div>}
+        </section>
+    );
 };
