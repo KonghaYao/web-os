@@ -1,9 +1,11 @@
 import { WebTerminal } from "./components/terminal/Terminal.tsx";
+import { Explorer } from "./components/explorer/index.tsx";
 
 function App() {
     return (
         <>
-            <WebTerminal></WebTerminal>
+            {/* <WebTerminal></WebTerminal> */}
+            <Explorer></Explorer>
         </>
     );
 }
