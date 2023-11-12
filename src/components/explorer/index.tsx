@@ -3,6 +3,12 @@ import { trpc } from "../../api";
 import { SolidListTable } from "../../basic/ListTable";
 import { Window } from "../../basic/Window";
 import { TableFieldFormat } from "../../basic/TableFieldFormat";
+import {
+    getIconForFile,
+    getIconForFolder,
+    getIconForOpenFolder,
+} from "vscode-icons-js";
+
 export const Explorer = () => {
     const pwd = atom("");
     const maxCount = atom(0);
@@ -64,7 +70,33 @@ export const Explorer = () => {
                     }
                 }}
                 columns={[
-                    { field: "icon", title: "", width: 50 },
+                    {
+                        field: "icon",
+                        title: "",
+                        width: "auto",
+                        cellType: "image",
+                        dragHeader: false,
+                        maxWidth: 50,
+                        minWidth: 50,
+                        keepAspectRatio: true,
+                        imageAutoSizing: false,
+                        fieldFormat(record) {
+                            if (record.isFile)
+                                return (
+                                    "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                                    getIconForFile(record.name)
+                                );
+                            if (record.isDirectory)
+                                return (
+                                    "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                                    getIconForFolder(record.name)
+                                );
+                            return "";
+                        },
+                        style: {
+                            margin: 0,
+                        },
+                    },
                     { field: "name", title: "名称", width: 200, sort: true },
                     {
                         field: "birthtime",

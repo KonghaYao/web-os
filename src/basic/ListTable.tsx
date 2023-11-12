@@ -55,7 +55,7 @@ export const SolidListTable = (
             },
         }),
         overscrollBehavior: "none",
-        defaultRowHeight: 24,
+        defaultRowHeight: 36,
         defaultHeaderRowHeight: 32,
         defaultColWidth: 100,
     } as ListTableConstructorOptions);
