@@ -22,7 +22,7 @@ type SolidTableEvent = {
 };
 export const SolidListTable = (
     props: ListTableConstructorOptions & {
-        style: string;
+        class: string;
     } & Partial<SolidTableEvent> & {
             paginationStack?: ReturnType<typeof usePaginationStack<any>>;
         }
@@ -48,6 +48,7 @@ export const SolidListTable = (
                 borderLineWidth: 0,
             },
         }),
+        overscrollBehavior: "none",
         defaultRowHeight: 24,
         defaultHeaderRowHeight: 32,
         defaultColWidth: 100,
@@ -73,7 +74,7 @@ export const SolidListTable = (
     });
     return (
         <div
-            style={pp().style}
+            class={pp().class}
             ref={(container) => {
                 const options = pp();
                 tableInstance = new ListTable(container, options);

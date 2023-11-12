@@ -20,20 +20,22 @@ export const Explorer = () => {
     const itemList = reflect(() => folder.dataSlices().flat());
 
     return (
-        <section>
-            <input
-                type="text"
-                {...VModel(pathString, { valueName: "input" })}
-            />
-            <button
-                onclick={() => {
-                    pwd(() => pathString());
-                    folder.resetStack();
-                }}>
-                跳转
-            </button>
+        <section class="flex w-96 h-48 flex-col">
+            <header>
+                <input
+                    type="text"
+                    {...VModel(pathString, { valueName: "input" })}
+                />
+                <button
+                    onclick={() => {
+                        pwd(() => pathString());
+                        folder.resetStack();
+                    }}>
+                    跳转
+                </button>
+            </header>
             <SolidListTable
-                style="height:300px;width:300px"
+                class="flex-1"
                 widthMode="standard"
                 dragHeaderMode="column"
                 select={{
