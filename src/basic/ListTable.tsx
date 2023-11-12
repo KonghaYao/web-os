@@ -33,6 +33,12 @@ export const SolidListTable = (
         hover: {
             highlightMode: "row",
         },
+        select: {
+            disableSelect: false,
+            headerSelectMode: "inline",
+        },
+        dragHeaderMode: "column",
+        widthMode: "standard",
         theme: themes.SIMPLIFY.extends({
             selectionStyle: {
                 cellBorderColor: "transparent",
@@ -68,7 +74,6 @@ export const SolidListTable = (
             }
         )
     );
-    // tableInstance.setRecords()
     onCleanup(() => {
         tableInstance;
     });

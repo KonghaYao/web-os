@@ -32,6 +32,9 @@ dependencies:
   ansi-escape-sequences:
     specifier: ^6.2.2
     version: 6.2.2
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   fastify:
     specifier: ^4.24.3
     version: 4.24.3
@@ -44,6 +47,9 @@ dependencies:
   path-browserify:
     specifier: ^1.0.1
     version: 1.0.1
+  pretty-bytes:
+    specifier: ^6.1.1
+    version: 6.1.1
   solid-js:
     specifier: ^1.7.8
     version: 1.8.5
@@ -1646,6 +1652,10 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+    dev: false
+
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -2371,6 +2381,11 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
+
+  /pretty-bytes@6.1.1:
+    resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+    dev: false
 
   /process-warning@2.3.0:
     resolution: {integrity: sha512-N6mp1+2jpQr3oCFMz6SeHRGbv6Slb20bRhj4v3xR99HqNToAcOe1MFOp4tytyzOfJn+QtN8Rf7U/h2KAn4kC6g==}

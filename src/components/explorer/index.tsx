@@ -2,6 +2,7 @@ import { VModel, atom, reflect, usePaginationStack } from "@cn-ui/reactive";
 import { trpc } from "../../api";
 import { SolidListTable } from "../../basic/ListTable";
 import { Window } from "../../basic/Window";
+import { TableFieldFormat } from "../../basic/TableFieldFormat";
 export const Explorer = () => {
     const pwd = atom("");
     const maxCount = atom(0);
@@ -37,12 +38,6 @@ export const Explorer = () => {
             </div>
             <SolidListTable
                 class="flex-1"
-                widthMode="standard"
-                dragHeaderMode="column"
-                select={{
-                    disableSelect: false,
-                    headerSelectMode: "inline",
-                }}
                 records={folder.dataSlices().flat()}
                 dblclick_cell={(e) => {
                     const data: ReturnType<typeof itemList>[0] = e.originData;
@@ -75,17 +70,20 @@ export const Explorer = () => {
                         field: "birthtime",
                         title: "创建时间",
                         width: 200,
+                        fieldFormat: TableFieldFormat.Time("birthtime"),
                         sort: true,
                     },
                     {
                         field: "atime",
                         title: "上次打开时间",
                         width: 200,
+                        fieldFormat: TableFieldFormat.Time("atime"),
                         sort: true,
                     },
                     {
                         field: "mtime",
                         title: "修改时间",
+                        fieldFormat: TableFieldFormat.Time("mtime"),
                         width: 200,
                         sort: true,
                     },
@@ -93,6 +91,7 @@ export const Explorer = () => {
                         field: "size",
                         title: "文件大小",
                         width: 100,
+                        fieldFormat: TableFieldFormat.ByteSize("size"),
                         sort: true,
                     },
                 ]}></SolidListTable>
