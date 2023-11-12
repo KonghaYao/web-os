@@ -1,17 +1,20 @@
-import { VModel, atom, reflect, usePaginationStack } from "@cn-ui/reactive";
+import { atom, reflect, usePaginationStack } from "@cn-ui/reactive";
 import { trpc } from "../../api";
 import { SolidListTable } from "../../basic/ListTable";
 import { RegisterWindow, Window } from "../../basic/Window";
 import { TableFieldFormat } from "../../basic/TableFieldFormat";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
-import { SiFramer } from "solid-icons/si";
+import {
+    RiArrowsArrowLeftSLine,
+    RiArrowsArrowRightSLine,
+} from "solid-icons/ri";
+import { useHistoryTravel } from "solidjs-use";
 import { ButtonIcon } from "../../basic/Icon";
 
 export const Explorer = () => {
     const pwd = atom("");
+    const history = useHistoryTravel([pwd, pwd]);
     const maxCount = atom(0);
-    /** 用户输入的属性 */
-    const pathString = reflect(() => pwd());
     const folder = usePaginationStack((page, maxPage) => {
         return trpc.file.listDir
             .query({ page, dir: pwd(), size: 10 })
@@ -29,18 +32,24 @@ export const Explorer = () => {
         <Window name="explorer">
             <RegisterWindow name="headerSlot">
                 <div class="flex-1 flex gap-2 p-4">
-                    <ButtonIcon>{SiFramer}</ButtonIcon>
-                    <input
-                        type="text"
-                        {...VModel(pathString, { valueName: "input" })}
-                    />
-                    <button
+                    <ButtonIcon
                         onclick={() => {
-                            pwd(() => pathString());
+                            pwd((i) => i.replace(/^(.*)\/[^\/]*$/, "$1"));
                             folder.resetStack();
                         }}>
-                        跳转
-                    </button>
+                        {RiArrowsArrowLeftSLine}
+                    </ButtonIcon>
+                    <ButtonIcon
+                        onclick={() => {
+                            history.undo();
+                            folder.resetStack();
+                        }}>
+                        {RiArrowsArrowRightSLine}
+                    </ButtonIcon>
+
+                    <div class="mx-2">
+                        {pwd().replace(/^.*\/([^\/]*)$/, "$1")}
+                    </div>
                 </div>
             </RegisterWindow>
             <SolidListTable
@@ -50,6 +59,7 @@ export const Explorer = () => {
                     const data: ReturnType<typeof itemList>[0] = e.originData;
                     if (data.isDirectory) {
                         pwd((i) => i + "/" + data.name);
+                        history.clear();
                         folder.resetStack();
                     }
                     console.log();
@@ -128,10 +138,15 @@ export const Explorer = () => {
                         sort: true,
                     },
                 ]}></SolidListTable>
-            <div title="缓存加载比例">
-                {folder.dataSlices().reduce((col, cur) => col + cur.length, 0)}/
-                {maxCount()}
-            </div>
+            <footer class="flex gap-4 px-2 text-sm border-t border-gray-100">
+                <div>
+                    {folder
+                        .dataSlices()
+                        .reduce((col, cur) => col + cur.length, 0)}
+                    /{maxCount()}
+                </div>
+                <div class=" flex-1">{pwd()}</div>
+            </footer>
         </Window>
     );
 };
