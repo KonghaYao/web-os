@@ -53,16 +53,19 @@ export const Explorer = () => {
                 </div>
             </RegisterWindow>
             <SolidListTable
+                cacheKey="app-explorer-list"
                 class="flex-1"
                 records={folder.dataSlices().flat()}
                 dblclick_cell={(e) => {
-                    const data: ReturnType<typeof itemList>[0] = e.originData;
-                    if (data.isDirectory) {
-                        pwd((i) => i + "/" + data.name);
-                        history.clear();
-                        folder.resetStack();
+                    if (e.originData) {
+                        const data: ReturnType<typeof itemList>[0] =
+                            e.originData;
+                        if (data.isDirectory) {
+                            pwd((i) => i + "/" + data.name);
+                            history.clear();
+                            folder.resetStack();
+                        }
                     }
-                    console.log();
                 }}
                 scroll={(args) => {
                     if (
@@ -117,6 +120,13 @@ export const Explorer = () => {
                         sort: true,
                     },
                     {
+                        field: "size",
+                        title: "文件大小",
+                        width: 100,
+                        fieldFormat: TableFieldFormat.ByteSize("size"),
+                        sort: true,
+                    },
+                    {
                         field: "atime",
                         title: "上次打开时间",
                         width: 200,
@@ -128,13 +138,6 @@ export const Explorer = () => {
                         title: "修改时间",
                         fieldFormat: TableFieldFormat.Time("mtime"),
                         width: 200,
-                        sort: true,
-                    },
-                    {
-                        field: "size",
-                        title: "文件大小",
-                        width: 100,
-                        fieldFormat: TableFieldFormat.ByteSize("size"),
                         sort: true,
                     },
                 ]}></SolidListTable>
