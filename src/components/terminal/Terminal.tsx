@@ -6,6 +6,7 @@ import { atom, localSync } from "@cn-ui/reactive";
 import { FitAddon } from "xterm-addon-fit";
 import { WebLinksAddon } from "xterm-addon-web-links";
 import { theme } from "./theme.ts";
+import { Window } from "../../basic/Window.tsx";
 export function WebTerminal() {
     const dom = atom<HTMLDivElement | null>(null);
     const socketURL = atom("");
@@ -28,7 +29,11 @@ export function WebTerminal() {
     onCleanup(() => {
         term.dispose();
     });
-    return <div ref={dom}></div>;
+    return (
+        <Window name="terminal">
+            <div ref={dom}></div>;
+        </Window>
+    );
 }
 
 const createTerminal = (socketURL: string) => {

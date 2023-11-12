@@ -15,12 +15,7 @@ import {
     splitProps,
 } from "solid-js";
 import { ValueOf } from "./type-utils";
-import {
-    ArrayAtom,
-    atom,
-    localSync,
-    usePaginationStack,
-} from "@cn-ui/reactive";
+import { ArrayAtom, localSync, usePaginationStack } from "@cn-ui/reactive";
 import { nextTick } from "solidjs-use";
 
 type SolidTableEvent = {
