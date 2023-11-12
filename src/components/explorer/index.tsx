@@ -74,12 +74,10 @@ export const Explorer = () => {
                         sort: true,
                     },
                 ]}></SolidListTable>
-            {folder.dataSlices().reduce((col, cur) => col + cur.length, 0)}/
-            {maxCount()}
-            {folder.currentPage() < folder.maxPage() && (
-                <div onclick={() => folder.next()}>加载更多</div>
-            )}
-            {folder.currentPage() === folder.maxPage() && <div>没有更多了</div>}
+            <div title="缓存加载比例">
+                {folder.dataSlices().reduce((col, cur) => col + cur.length, 0)}/
+                {maxCount()}
+            </div>
         </section>
     );
 };
