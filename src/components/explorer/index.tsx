@@ -1,6 +1,7 @@
 import { VModel, atom, reflect, usePaginationStack } from "@cn-ui/reactive";
 import { trpc } from "../../api";
 import { SolidListTable } from "../../basic/ListTable";
+import { Window } from "../../basic/Window";
 export const Explorer = () => {
     const pwd = atom("");
     const maxCount = atom(0);
@@ -20,8 +21,8 @@ export const Explorer = () => {
     const itemList = reflect(() => folder.dataSlices().flat());
 
     return (
-        <section class="flex w-96 h-48 flex-col">
-            <header>
+        <Window name="explorer">
+            <div>
                 <input
                     type="text"
                     {...VModel(pathString, { valueName: "input" })}
@@ -33,7 +34,7 @@ export const Explorer = () => {
                     }}>
                     跳转
                 </button>
-            </header>
+            </div>
             <SolidListTable
                 class="flex-1"
                 widthMode="standard"
@@ -68,11 +69,30 @@ export const Explorer = () => {
                     }
                 }}
                 columns={[
+                    { field: "icon", title: "", width: 50 },
                     { field: "name", title: "名称", width: 200, sort: true },
                     {
                         field: "birthtime",
-                        title: "创建日期",
+                        title: "创建时间",
                         width: 200,
+                        sort: true,
+                    },
+                    {
+                        field: "atime",
+                        title: "上次打开时间",
+                        width: 200,
+                        sort: true,
+                    },
+                    {
+                        field: "mtime",
+                        title: "修改时间",
+                        width: 200,
+                        sort: true,
+                    },
+                    {
+                        field: "size",
+                        title: "文件大小",
+                        width: 100,
                         sort: true,
                     },
                 ]}></SolidListTable>
@@ -80,6 +100,6 @@ export const Explorer = () => {
                 {folder.dataSlices().reduce((col, cur) => col + cur.length, 0)}/
                 {maxCount()}
             </div>
-        </section>
+        </Window>
     );
 };

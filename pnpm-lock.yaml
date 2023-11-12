@@ -14,6 +14,9 @@ dependencies:
   '@minht11/solid-virtual-container':
     specifier: ^0.2.1
     version: 0.2.1(solid-js@1.8.5)
+  '@neodrag/solid':
+    specifier: ^2.0.3
+    version: 2.0.3(solid-js@1.8.5)
   '@trpc/client':
     specifier: ^10.43.2
     version: 10.43.2(@trpc/server@10.43.2)
@@ -728,6 +731,14 @@ packages:
     resolution: {integrity: sha512-HvQWx1uE5NWwx9WsN4waFtmyOjhZKMA/3vBf+j3zGsRfi556LCUk4oOmqZcOvIB5nEpHezvuZ8oUlwxigdO3Xg==}
     peerDependencies:
       solid-js: '>= 1.0.0'
+    dependencies:
+      solid-js: 1.8.5
+    dev: false
+
+  /@neodrag/solid@2.0.3(solid-js@1.8.5):
+    resolution: {integrity: sha512-cURoAbxN3Q9tf2/XsY8LzktGcjIPNP5PUej6JO0K2eT2Nils7g0zzemSs6Wozbo2J8gvBKuXXWRZcwhP7GCN4Q==}
+    peerDependencies:
+      solid-js: ^1.0.0
     dependencies:
       solid-js: 1.8.5
     dev: false
