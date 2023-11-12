@@ -43,7 +43,7 @@ export const SolidListTable = (
             selectionStyle: {
                 cellBorderColor: "transparent",
                 cellBorderLineWidth: 0,
-                cellBgColor: "transparent",
+                cellBgColor: "#fafafa",
             },
             bodyStyle: {
                 fontSize: 16,

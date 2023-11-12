@@ -1,13 +1,11 @@
 import { VModel, atom, reflect, usePaginationStack } from "@cn-ui/reactive";
 import { trpc } from "../../api";
 import { SolidListTable } from "../../basic/ListTable";
-import { Window } from "../../basic/Window";
+import { RegisterWindow, Window } from "../../basic/Window";
 import { TableFieldFormat } from "../../basic/TableFieldFormat";
-import {
-    getIconForFile,
-    getIconForFolder,
-    getIconForOpenFolder,
-} from "vscode-icons-js";
+import { getIconForFile, getIconForFolder } from "vscode-icons-js";
+import { SiFramer } from "solid-icons/si";
+import { ButtonIcon } from "../../basic/Icon";
 
 export const Explorer = () => {
     const pwd = atom("");
@@ -29,19 +27,22 @@ export const Explorer = () => {
 
     return (
         <Window name="explorer">
-            <div>
-                <input
-                    type="text"
-                    {...VModel(pathString, { valueName: "input" })}
-                />
-                <button
-                    onclick={() => {
-                        pwd(() => pathString());
-                        folder.resetStack();
-                    }}>
-                    跳转
-                </button>
-            </div>
+            <RegisterWindow name="headerSlot">
+                <div class="flex-1 flex gap-2 p-4">
+                    <ButtonIcon>{SiFramer}</ButtonIcon>
+                    <input
+                        type="text"
+                        {...VModel(pathString, { valueName: "input" })}
+                    />
+                    <button
+                        onclick={() => {
+                            pwd(() => pathString());
+                            folder.resetStack();
+                        }}>
+                        跳转
+                    </button>
+                </div>
+            </RegisterWindow>
             <SolidListTable
                 class="flex-1"
                 records={folder.dataSlices().flat()}
