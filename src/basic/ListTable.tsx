@@ -26,8 +26,8 @@ export const SolidListTable = (
         class: string;
         cacheKey: string;
     } & Partial<SolidTableEvent> & {
-            paginationStack?: ReturnType<typeof usePaginationStack<any>>;
-        }
+        paginationStack?: ReturnType<typeof usePaginationStack<any>>;
+    }
 ) => {
     let tableInstance: ListTable;
     const columnCache = useColumnCache(props);
@@ -153,12 +153,15 @@ const useColumnCache = (props: { cacheKey: string }) => {
                 ListTable.EVENT_TYPE.CHANGE_HEADER_POSITION,
                 (e) => {
                     const old = columnsCache();
-                    columnsCache.move(
-                        old[e.source.col],
-                        old[e.target.col],
-                        "after"
-                    );
-                    console.log(columnsCache());
+                    if (e.source.col !== e.target.col) {
+                        columnsCache.move(
+                            old[e.source.col],
+                            old[e.target.col],
+                            "after"
+                        );
+                        console.log(e.source.col,e.target.col);
+                    }
+
                     return;
                 }
             );
