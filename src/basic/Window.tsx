@@ -36,8 +36,14 @@ export const Window = (props: { name: string; children: JSXElement }) => {
                     onDragEnd: (data) => {
                         position({ x: data.offsetX, y: data.offsetY });
                     },
+                    bounds:{
+                        top: 32,
+                        left: -Infinity,
+                        right: -Infinity,
+                        bottom: -Infinity
+                    }
                 }}
-                class="flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded overflow-hidden relative cursor-default select-none">
+                class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded overflow-hidden relative cursor-default select-none">
                 <HeaderBar></HeaderBar>
                 {props.children}
             </section>

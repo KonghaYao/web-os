@@ -50,6 +50,10 @@ export const SolidListTable = (
             bodyStyle: {
                 fontSize: 16,
                 borderLineWidth: 0,
+                bgColor: "transparent"
+            },
+            defaultStyle:{
+                bgColor:"transparent",
             },
             headerStyle: {
                 fontSize: 16,
@@ -159,7 +163,7 @@ const useColumnCache = (props: { cacheKey: string }) => {
                             old[e.target.col],
                             "after"
                         );
-                        console.log(e.source.col,e.target.col);
+                        console.log(e.source.col, e.target.col);
                     }
 
                     return;
