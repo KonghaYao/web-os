@@ -8,14 +8,10 @@ import {
 } from "solid-icons/ri";
 import { useHistoryTravel } from "solidjs-use";
 import { ButtonIcon } from "../../basic/Icon";
-import { SystemContext } from "../system";
-import { useContext } from "solid-js";
 import { listTableConfig } from "./listTableConfig";
 import { MenuList } from "./MenuList";
 
 export const Explorer = () => {
-    const system = useContext(SystemContext)!;
-    system.menuList(MenuList);
     const pwd = atom("");
     const history = useHistoryTravel([pwd, pwd]);
     const maxCount = atom(0);
@@ -33,7 +29,7 @@ export const Explorer = () => {
     const itemList = reflect(() => folder.dataSlices().flat());
 
     return (
-        <Window name="explorer">
+        <Window name="explorer" menuList={MenuList}>
             <RegisterWindow name="headerSlot">
                 <div class="flex-1 flex gap-2 p-4">
                     <ButtonIcon

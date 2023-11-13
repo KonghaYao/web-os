@@ -10,13 +10,23 @@ import {
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { GetContextInner } from "./type-utils";
+import { SystemMenuList } from "../components/system/Menu/SystemMenuList";
+import { SystemContext } from "../components/system";
 
 export const WindowContext = createContext<{
     headerSlot: Atom<Component>;
     sideSlot: Atom<Component>;
+    menuList: Atom<SystemMenuList>;
 }>();
 
-export const Window = (props: { name: string; children: JSXElement }) => {
+export const Window = (props: {
+    name: string;
+    children: JSXElement;
+    menuList: SystemMenuList;
+}) => {
+    const system = useContext(SystemContext)!;
+    const menuList = atom(props.menuList);
+    system.menuList(menuList());
     const { draggable } = createDraggable();
     const position = atom({
         x: 0,
@@ -28,6 +38,7 @@ export const Window = (props: { name: string; children: JSXElement }) => {
             value={{
                 headerSlot: atom<Component>(() => null),
                 sideSlot: atom<Component>(() => null),
+                menuList: atom(props.menuList),
             }}>
             <section
                 use:draggable={{
@@ -36,12 +47,15 @@ export const Window = (props: { name: string; children: JSXElement }) => {
                     onDragEnd: (data) => {
                         position({ x: data.offsetX, y: data.offsetY });
                     },
-                    bounds:{
+                    bounds: {
                         top: 32,
                         left: -Infinity,
                         right: -Infinity,
-                        bottom: -Infinity
-                    }
+                        bottom: -Infinity,
+                    },
+                }}
+                onclick={() => {
+                    system.menuList(menuList());
                 }}
                 class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded overflow-hidden relative cursor-default select-none">
                 <HeaderBar></HeaderBar>

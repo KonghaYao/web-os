@@ -7,6 +7,7 @@ import { FitAddon } from "xterm-addon-fit";
 import { WebLinksAddon } from "xterm-addon-web-links";
 import { theme } from "./theme.ts";
 import { Window } from "../../basic/Window.tsx";
+import { MenuList } from "./MenuList.tsx";
 export function WebTerminal() {
     const dom = atom<HTMLDivElement | null>(null);
     const socketURL = atom("");
@@ -25,12 +26,14 @@ export function WebTerminal() {
             }
         } while (!term);
         term.open(dom()!);
+        // term.fit();
+        console.log(term);
     });
     onCleanup(() => {
         term.dispose();
     });
     return (
-        <Window name="terminal">
+        <Window name="terminal" menuList={MenuList}>
             <div ref={dom}></div>;
         </Window>
     );
