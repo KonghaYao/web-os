@@ -1,19 +1,24 @@
-import { SiApple } from 'solid-icons/si'
-import { Icon } from '../../basic/Icon'
 import { JSXElement, createContext } from 'solid-js'
-import { Atom } from '@cn-ui/reactive'
+import { Atom, atom } from '@cn-ui/reactive'
 import { WallPaper } from './WallPaper'
+import { SystemMenuList, SystemMenuBar } from './SystemMenuList'
 
 export const SystemContext = createContext<{
     wallpaper?: Atom<{
         url: string
     }>
+    menuList: Atom<SystemMenuList>
 }>()
 
 export const System = (props: { children: JSXElement }) => {
-    return <SystemContext.Provider value={{}}>
+    return <SystemContext.Provider value={{
+        menuList: atom<SystemMenuList>({
+            name: "KonghaYao",
+            list: []
+        })
+    }}>
         <section class='flex flex-col h-full w-full overflow-hidden'>
-            <SystemStatusBar></SystemStatusBar>
+            <SystemMenuBar></SystemMenuBar>
             <section class='flex-1'>
                 {props.children}
             </section>
@@ -21,19 +26,4 @@ export const System = (props: { children: JSXElement }) => {
         </section>
     </SystemContext.Provider>
 }
-export const SystemStatusBar = () => {
-    return <header class='h-8 flex-none w-full flex px-4 py-2 backdrop-blur-sm bg-gray-50/20'>
-        <div>
-            <Icon>{SiApple}</Icon>
 
-        </div>
-
-        <div class='flex-1'>
-
-        </div>
-
-        <div>
-
-        </div>
-    </header>
-}

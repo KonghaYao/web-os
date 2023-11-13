@@ -11,6 +11,9 @@ import {
 import { useHistoryTravel } from "solidjs-use";
 import { ButtonIcon } from "../../basic/Icon";
 import { ColumnsDefine } from "@visactor/vtable";
+import { SystemContext } from "../system";
+import { SystemMenuList } from '../system/SystemMenuList';
+import { useContext } from "solid-js";
 
 const listTableConfig: ColumnsDefine = [
     {
@@ -70,7 +73,26 @@ const listTableConfig: ColumnsDefine = [
         sort: true,
     },
 ];
+
+const MenuList: SystemMenuList = {
+    name: "explorer",
+    list: [{
+        label: "file",
+        actions: [
+            {
+                label: "New Finder Window",
+                actions: [
+                    { label: "maxContext" }
+                ]
+            }
+        ]
+    }]
+}
+
+
 export const Explorer = () => {
+    const system = useContext(SystemContext)!
+    system.menuList(MenuList)
     const pwd = atom("");
     const history = useHistoryTravel([pwd, pwd]);
     const maxCount = atom(0);

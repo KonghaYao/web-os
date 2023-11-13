@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   '@cn-ui/reactive':
     specifier: ^2.3.0
@@ -50,6 +46,9 @@ dependencies:
   pretty-bytes:
     specifier: ^6.1.1
     version: 6.1.1
+  solid-contextmenu:
+    specifier: ^0.0.2
+    version: 0.0.2(solid-js@1.8.5)(solid-transition-group@0.0.10)
   solid-icons:
     specifier: ^1.1.0
     version: 1.1.0(solid-js@1.8.5)
@@ -1555,6 +1554,11 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /clsx@1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
+
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
     dependencies:
@@ -2631,6 +2635,18 @@ packages:
     resolution: {integrity: sha512-YiuPbxpCj4hD9Qs06hGAz/OZhQ0eDuALN0lRWJez0eD/RevzKqGdUx1IOMUnXgpr+sXZLq3g8ERwbAH0bCb8vg==}
     dev: false
 
+  /solid-contextmenu@0.0.2(solid-js@1.8.5)(solid-transition-group@0.0.10):
+    resolution: {integrity: sha512-TmOhIvVpZmQdoiydSP07d9rT0xu/wvRSH6TJqbGPd+2XZz0wOualbm5CvLiHbOGnOU5tBrbe4q0cU/EMvG7u+w==}
+    peerDependencies:
+      solid-js: ^1.4.8
+      solid-transition-group: ^0.0.10
+    dependencies:
+      clsx: 1.2.1
+      mitt: 3.0.1
+      solid-js: 1.8.5
+      solid-transition-group: 0.0.10(solid-js@1.8.5)
+    dev: false
+
   /solid-icons@1.1.0(solid-js@1.8.5):
     resolution: {integrity: sha512-IesTfr/F1ElVwH2E1110s2RPXH4pujKfSs+koT8rwuTAdleO5s26lNSpqJV7D1+QHooJj18mcOiz2PIKs0ic+A==}
     peerDependencies:
@@ -2655,6 +2671,14 @@ packages:
       '@babel/types': 7.23.0
       solid-js: 1.8.5
     dev: true
+
+  /solid-transition-group@0.0.10(solid-js@1.8.5):
+    resolution: {integrity: sha512-b3O9z6BUP60CG1WnTdqFuvHms0reDNYwQF+eAEEaSaoDEmiOu9+Lu7zQgWGySJjaAdSAClhmFCmx/eAjQgfIoA==}
+    peerDependencies:
+      solid-js: ^1.0.0
+    dependencies:
+      solid-js: 1.8.5
+    dev: false
 
   /solidjs-use@2.3.0:
     resolution: {integrity: sha512-ZyH2jiUSQU+5S5vd8zyvqz9X2ikhMjJhDeh/TjRzjLDJlZ1RuZaMxdM+jGsrJxo3X/xBW9kDpYNONXs6wYrQCQ==}
@@ -3045,3 +3069,7 @@ packages:
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: false
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
