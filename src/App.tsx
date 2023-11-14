@@ -6,7 +6,7 @@ import { System } from "./components/system/index.tsx";
 function App() {
     return (
         <System>
-            <WebTerminal></WebTerminal>
+            {/* <WebTerminal></WebTerminal> */}
             <Explorer></Explorer>
         </System>
     );

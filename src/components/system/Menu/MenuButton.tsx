@@ -2,9 +2,9 @@ import { Show } from "solid-js";
 import { atom } from "@cn-ui/reactive";
 import { useElementHover } from "solidjs-use";
 import { FloatMenu } from "./FloatMenu";
-import { SystemMenuAction } from "./SystemMenuList";
+import { SystemMenuItemConfig } from "./SystemMenuList";
 
-export const MenuButton = (props: SystemMenuAction) => {
+export const MenuButton = (props: SystemMenuItemConfig) => {
     const target = atom<HTMLDivElement | null>(null);
 
     const show = useElementHover(target, { delayLeave: 150 });

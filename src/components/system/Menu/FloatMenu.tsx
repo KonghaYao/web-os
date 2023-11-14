@@ -1,10 +1,16 @@
-import { Show } from "solid-js";
+import { Show, useContext } from "solid-js";
 import { atom } from "@cn-ui/reactive";
 import { useElementHover } from "solidjs-use";
-import { SystemMenuAction } from "./SystemMenuList";
+import {
+    SystemMenuAction,
+    SystemMenuFloatBtn,
+    SystemMenuItemConfig,
+} from "./SystemMenuList";
+import { SystemContext } from "..";
 
 /** 系统左上角的浮动菜单组件 */
-export const FloatMenu = (props: SystemMenuAction) => {
+export const FloatMenu = (props: SystemMenuItemConfig) => {
+    const system = useContext(SystemContext);
     // 菜单列表的样式
     const listClass =
         "flex flex-col gap-2 rounded-lg p-1  w-[12rem] backdrop-blur shadow bg-gray-200/70 z-10 ";
@@ -15,7 +21,7 @@ export const FloatMenu = (props: SystemMenuAction) => {
 
     return (
         <div class={listClass + "absolute top-[110%] -left-[5%]"}>
-            {props.actions?.map((i) => {
+            {(props as SystemMenuFloatBtn).actions?.map((i) => {
                 // 定义菜单元素
                 const el = atom<HTMLDivElement | null>(null);
                 // 检测鼠标是否悬停在菜单元素上
@@ -27,22 +33,36 @@ export const FloatMenu = (props: SystemMenuAction) => {
                         class={
                             "relative " + (isHovered() ? " bg-blue-200  " : "")
                         }>
-                        <div class={"h-full w-full " + hoverButton}>
+                        <div
+                            class={"h-full w-full " + hoverButton}
+                            onclick={() => {
+                                i.key && system?.event()?.emit(i.key);
+                            }}>
                             {i.label}
                         </div>
-                        <Show when={isHovered()}>
+                        <Show when={(i as any).actions && isHovered()}>
                             <div
                                 class={
                                     listClass +
                                     " shadow-lg absolute top-0 left-[95%]"
                                 }>
-                                {i.actions?.map((ii) => {
-                                    return (
-                                        <button class={hoverButton}>
-                                            {ii.label}
-                                        </button>
-                                    );
-                                })}
+                                {(i as SystemMenuFloatBtn).actions?.map(
+                                    (_ii) => {
+                                        const ii = _ii as SystemMenuAction;
+                                        return (
+                                            <button
+                                                class={hoverButton}
+                                                onclick={() => {
+                                                    ii.key &&
+                                                        system
+                                                            ?.event()
+                                                            ?.emit(ii.key);
+                                                }}>
+                                                {ii.label}
+                                            </button>
+                                        );
+                                    }
+                                )}
                             </div>
                         </Show>
                     </button>

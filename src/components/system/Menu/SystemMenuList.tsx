@@ -3,19 +3,25 @@ import { Icon } from "../../../basic/Icon";
 import { For, useContext } from "solid-js";
 import { SystemContext } from "../";
 import { MenuButton } from "./MenuButton";
-export interface SystemMenuAction {
+interface SystemMenuActionBase {
     label: string;
     disabled?: boolean;
-    actions?: SystemMenuAction[];
 }
+export interface SystemMenuAction extends SystemMenuActionBase {
+    /** window 组件的触发事件名称 */
+    key: string;
+}
+export interface SystemMenuFloatBtn extends SystemMenuActionBase {
+    actions: SystemMenuItemConfig[];
+}
+export type SystemMenuItemConfig = SystemMenuAction | SystemMenuFloatBtn;
 export interface SystemMenuList {
     /** APP 名称 */
     name: string;
-    list: SystemMenuAction[];
+    list: SystemMenuItemConfig[];
 }
 export const SystemMenuBar = () => {
     const system = useContext(SystemContext)!;
-
     return (
         <header class="h-8 flex-none w-full flex px-4  backdrop-blur-sm bg-gray-50/20 text-sm items-center select-none">
             <div class="flex gap-4">

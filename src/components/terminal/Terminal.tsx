@@ -11,7 +11,7 @@ import { theme } from "./theme.ts";
 import { Window } from "../../basic/Window.tsx";
 import { MenuList } from "./MenuList.tsx";
 import { useResizeObserver } from "solidjs-use";
-export function WebTerminal() {
+export const WebTerminal = () => {
     const dom = atom<HTMLDivElement | null>(null);
     const socketURL = atom("");
     localSync(socketURL, "WEB_OS_SOCKET_URL");
@@ -36,12 +36,8 @@ export function WebTerminal() {
     useResizeObserver(dom, () => {
         if (terminal) terminal.fit.fit();
     });
-    return (
-        <Window name="terminal" menuList={MenuList}>
-            <div class="h-full w-full" ref={dom}></div>
-        </Window>
-    );
-}
+    return <div class="h-full w-full" ref={dom}></div>;
+};
 
 const createTerminal = (socketURL: string) => {
     const term = new Terminal({

@@ -1,16 +1,23 @@
 import { Atom, atom, localSync, reflect } from "@cn-ui/reactive";
 import { createDraggable } from "@neodrag/solid";
 import { useFullscreen } from "solidjs-use";
-import { Component, JSXElement, createContext, useContext } from "solid-js";
+import {
+    Component,
+    JSXElement,
+    createContext,
+    onCleanup,
+    onMount,
+    useContext,
+} from "solid-js";
 import { Dynamic } from "solid-js/web";
-import { GetContextInner } from "./type-utils";
 import { SystemMenuList } from "../components/system/Menu/SystemMenuList";
 import { SystemContext } from "../components/system";
-
+import mitt, { Emitter } from "mitt";
 export const WindowContext = createContext<{
     headerSlot: Atom<Component>;
     sideSlot: Atom<Component>;
     menuList: Atom<SystemMenuList>;
+    event: Emitter<Record<string, unknown>>;
 }>();
 
 export const Window = (props: {
@@ -20,19 +27,30 @@ export const Window = (props: {
 }) => {
     const system = useContext(SystemContext)!;
     const menuList = atom(props.menuList);
-    system.menuList(menuList());
+    const focusWindow = () => {
+        system.menuList(menuList());
+        system.event(event);
+    };
+    onMount(() => {
+        focusWindow();
+    });
     const { draggable } = createDraggable();
     const position = atom({
         x: 0,
         y: 0,
     });
     localSync(position, "window_" + props.name);
+    const event = mitt();
+    onCleanup(() => {
+        event.off("*");
+    });
     return (
         <WindowContext.Provider
             value={{
                 headerSlot: atom<Component>(() => null),
                 sideSlot: atom<Component>(() => null),
                 menuList: atom(props.menuList),
+                event,
             }}>
             <section
                 use:draggable={{
@@ -49,7 +67,7 @@ export const Window = (props: {
                     },
                 }}
                 onmousedown={() => {
-                    system.menuList(menuList());
+                    focusWindow();
                 }}
                 class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded-lg overflow-hidden relative cursor-default select-none">
                 <HeaderBar></HeaderBar>
@@ -86,10 +104,24 @@ export const HeaderBar = () => {
 
 /** 在 Window 中注册元素到固定的 Slot */
 export const RegisterWindow = (props: {
-    name: keyof GetContextInner<typeof WindowContext>;
+    name: "headerSlot" | "sideSlot";
     children: JSXElement;
 }) => {
     const window = useContext(WindowContext)!;
     window[props.name](() => () => props.children);
     return null;
+};
+
+export const defineWindowComponent = (
+    config: {
+        name: string;
+        menuList: SystemMenuList;
+    },
+    comp: Component
+) => {
+    return () => (
+        <Window {...config}>
+            <Dynamic component={comp}></Dynamic>
+        </Window>
+    );
 };
