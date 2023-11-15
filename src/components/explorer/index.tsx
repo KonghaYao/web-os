@@ -26,6 +26,7 @@ export const Explorer = defineWindowComponent(
         const history = useHistoryTravel([pwd, pwd]);
         const maxCount = atom(0);
         const folder = usePaginationStack((page, maxPage) => {
+            console.log(pwd());
             return trpc.file.listDir
                 .query({ page, dir: pwd(), size: 10 })
                 .then((res) => {
@@ -46,8 +47,14 @@ export const Explorer = defineWindowComponent(
                     <div class="flex-1 flex gap-2 p-4">
                         <ButtonIcon
                             onclick={() => {
-                                pwd((i) => i.replace(/^(.*)\/[^\/]*$/, "$1"));
-                                folder.resetStack();
+                                const backPath = pwd().replace(
+                                    /^(.*\/)[^\/]+\/?$/,
+                                    "$1"
+                                );
+                                if (backPath) {
+                                    pwd(backPath);
+                                    folder.resetStack();
+                                }
                             }}>
                             {RiArrowsArrowLeftSLine}
                         </ButtonIcon>
@@ -60,7 +67,7 @@ export const Explorer = defineWindowComponent(
                         </ButtonIcon>
 
                         <div class="mx-2">
-                            {pwd().replace(/^.*\/([^\/]*)$/, "$1")}
+                            {pwd().replace(/^.*\/([^\/]+)\/?$/, "$1")}
                         </div>
                     </div>
                 </RegisterWindow>

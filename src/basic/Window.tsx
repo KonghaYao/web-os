@@ -75,7 +75,7 @@ export const Window = (props: {
                 onmousedown={() => {
                     focusWindow();
                 }}
-                class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded-lg overflow-hidden relative cursor-default select-none"
+                class=" bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded-lg overflow-hidden relative cursor-default select-none"
                 style={{
                     "z-index": isFocusingMe() ? 8999 : 0,
                 }}>

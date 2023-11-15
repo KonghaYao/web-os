@@ -10,17 +10,23 @@ const viewDir = async (dir: string, query: { page: number; size: number }) => {
         list
             .slice(query.page * query.size, (query.page + 1) * query.size)
             .map(async (i) => {
-                const stat = await fs.stat(path.join(dir, i));
-                return {
-                    ...stat,
-                    isFile: stat.isFile(),
-                    isFIFO: stat.isFIFO(),
-                    isDirectory: stat.isDirectory(),
-                    name: i,
-                };
+                try {
+                    const stat = await fs.stat(path.join(dir, i));
+                    return [
+                        {
+                            ...stat,
+                            isFile: stat.isFile(),
+                            isFIFO: stat.isFIFO(),
+                            isDirectory: stat.isDirectory(),
+                            name: i,
+                        },
+                    ];
+                } catch (e) {
+                    return [];
+                }
             })
     );
-    return { dir, count: list.length, list: slice, size: query.size };
+    return { dir, count: list.length, list: slice.flat(), size: query.size };
 };
 
 export const fileRouter = router({
