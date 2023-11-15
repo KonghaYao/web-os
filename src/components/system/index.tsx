@@ -4,23 +4,30 @@ import { WallPaper } from "./WallPaper";
 import { SystemMenuList, SystemMenuBar } from "./Menu/SystemMenuList";
 import { Emitter } from "mitt";
 
+interface FocusingWindow {
+    menuList: SystemMenuList;
+    event: Emitter<any> | null;
+}
+
 export const SystemContext = createContext<{
     wallpaper?: Atom<{
         url: string;
     }>;
-    menuList: Atom<SystemMenuList>;
-    event: Atom<Emitter<any> | null>;
+
+    focusingWindow: Atom<FocusingWindow>;
 }>();
 
 export const System = (props: { children: JSXElement }) => {
     return (
         <SystemContext.Provider
             value={{
-                menuList: atom<SystemMenuList>({
-                    name: "KonghaYao",
-                    list: [],
+                focusingWindow: atom<FocusingWindow>({
+                    menuList: {
+                        name: "KonghaYao",
+                        list: [],
+                    },
+                    event: null,
                 }),
-                event: atom<Emitter<any> | null>(null),
             }}>
             <section class="flex flex-col h-full w-full overflow-hidden">
                 <SystemMenuBar></SystemMenuBar>

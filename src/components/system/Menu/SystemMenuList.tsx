@@ -26,9 +26,11 @@ export const SystemMenuBar = () => {
         <header class="h-8 flex-none w-full flex px-4  backdrop-blur-sm bg-gray-50/20 text-sm items-center select-none">
             <div class="flex gap-4">
                 <Icon>{SiApple}</Icon>
-                <span class="font-bold px-2">{system.menuList().name}</span>
+                <span class="font-bold px-2">
+                    {system.focusingWindow().menuList.name}
+                </span>
             </div>
-            <For each={system.menuList().list}>
+            <For each={system.focusingWindow().menuList.list}>
                 {(item) => {
                     return <MenuButton {...item}></MenuButton>;
                 }}

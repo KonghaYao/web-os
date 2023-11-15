@@ -2,9 +2,11 @@ import { Atom, atom, localSync, reflect } from "@cn-ui/reactive";
 import { createDraggable } from "@neodrag/solid";
 import { useFullscreen } from "solidjs-use";
 import {
+    Accessor,
     Component,
     JSXElement,
     createContext,
+    createMemo,
     onCleanup,
     onMount,
     useContext,
@@ -18,6 +20,7 @@ export const WindowContext = createContext<{
     sideSlot: Atom<Component>;
     menuList: Atom<SystemMenuList>;
     event: Emitter<Record<string, unknown>>;
+    isFocusingMe: Accessor<boolean>;
 }>();
 
 export const Window = (props: {
@@ -27,13 +30,7 @@ export const Window = (props: {
 }) => {
     const system = useContext(SystemContext)!;
     const menuList = atom(props.menuList);
-    const focusWindow = () => {
-        system.menuList(menuList());
-        system.event(event);
-    };
-    onMount(() => {
-        focusWindow();
-    });
+
     const { draggable } = createDraggable();
     const position = atom({
         x: 0,
@@ -44,6 +41,14 @@ export const Window = (props: {
     onCleanup(() => {
         event.off("*");
     });
+    const systemHandle = { menuList: menuList(), event };
+    const focusWindow = () => system.focusingWindow(systemHandle);
+    onMount(() => {
+        focusWindow();
+    });
+    const isFocusingMe = createMemo(() => {
+        return system.focusingWindow() === systemHandle;
+    });
     return (
         <WindowContext.Provider
             value={{
@@ -51,6 +56,7 @@ export const Window = (props: {
                 sideSlot: atom<Component>(() => null),
                 menuList: atom(props.menuList),
                 event,
+                isFocusingMe,
             }}>
             <section
                 use:draggable={{
@@ -69,7 +75,10 @@ export const Window = (props: {
                 onmousedown={() => {
                     focusWindow();
                 }}
-                class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded-lg overflow-hidden relative cursor-default select-none">
+                class="bg-gray-50/70 shadow-lg shadow-black/25 flex w-[40rem] h-[25rem] flex-col border border-gray-400 rounded-lg overflow-hidden relative cursor-default select-none"
+                style={{
+                    "z-index": isFocusingMe() ? 8999 : 0,
+                }}>
                 <HeaderBar></HeaderBar>
                 {props.children}
             </section>
