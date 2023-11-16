@@ -3,6 +3,7 @@ import { Atom, atom } from "@cn-ui/reactive";
 import { WallPaper } from "./WallPaper";
 import { SystemMenuList, SystemMenuBar } from "./Menu/SystemMenuList";
 import { Emitter } from "mitt";
+import { Dock } from "./Dock";
 
 interface FocusingWindow {
     menuList: SystemMenuList;
@@ -33,6 +34,7 @@ export const System = (props: { children: JSXElement }) => {
                 <SystemMenuBar></SystemMenuBar>
                 <section class="flex-1">{props.children}</section>
                 <WallPaper></WallPaper>
+                <Dock></Dock>
             </section>
         </SystemContext.Provider>
     );

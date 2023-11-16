@@ -26,8 +26,8 @@ export const SolidListTable = (
         class: string;
         cacheKey: string;
     } & Partial<SolidTableEvent> & {
-        paginationStack?: ReturnType<typeof usePaginationStack<any>>;
-    }
+            paginationStack?: ReturnType<typeof usePaginationStack<any>>;
+        }
 ) => {
     let tableInstance: ListTable;
     const columnCache = useColumnCache(props);
@@ -50,10 +50,10 @@ export const SolidListTable = (
             bodyStyle: {
                 fontSize: 16,
                 borderLineWidth: 0,
-                bgColor: "transparent"
+                bgColor: "transparent",
             },
-            defaultStyle:{
-                bgColor:"transparent",
+            defaultStyle: {
+                bgColor: "transparent",
             },
             headerStyle: {
                 fontSize: 16,
