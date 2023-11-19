@@ -4,19 +4,19 @@ import fastify from "fastify";
 import { appRouter } from "./router/index.js";
 import { platform } from "os";
 import { spawn } from "node-pty";
-
+import Etag from "@fastify/etag";
 export interface ServerOptions {
     dev?: boolean;
     port?: number;
     prefix?: string;
 }
 
-export function createServer(opts: ServerOptions) {
+export async function createServer(opts: ServerOptions) {
     const dev = opts.dev ?? true;
     const port = opts.port ?? 3000;
     const prefix = opts.prefix ?? "/trpc";
     const server = fastify({ logger: dev });
-
+    server.register(Etag);
     server.register(ws, {
         options: { maxPayload: 1048576 },
     });
@@ -51,6 +51,7 @@ export function createServer(opts: ServerOptions) {
             });
         });
     });
+    server.register(await import("./router/file.js").then((res) => res.plugin));
 
     const stop = async () => {
         await server.close();

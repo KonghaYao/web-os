@@ -1,6 +1,5 @@
 import { serverConfig } from "./config.js";
 import { createServer } from "./server.js";
-
-const server = createServer(serverConfig);
-
-void server.start();
+createServer(serverConfig).then((server) => {
+    void server.start();
+});

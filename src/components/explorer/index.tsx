@@ -26,7 +26,6 @@ export const Explorer = defineWindowComponent(
         const history = useHistoryTravel([pwd, pwd]);
         const maxCount = atom(0);
         const folder = usePaginationStack((page, maxPage) => {
-            console.log(pwd());
             return trpc.file.listDir
                 .query({ page, dir: pwd(), size: 10 })
                 .then((res) => {
@@ -38,9 +37,24 @@ export const Explorer = defineWindowComponent(
                 });
         }, {});
         const itemList = reflect(() => folder.dataSlices().flat());
+
+        // 注册 左上角 的 Menu 按钮事件
         useWindowEvent<typeof MenuList>("create-new2", () => {
             console.log("3232");
         });
+
+        // 获取文件流
+        const openFile = (filePath: string) => {
+            fetch("./api/explorer/file", {
+                headers: {
+                    "x-path": filePath,
+                },
+            })
+                .then((res) => res.text())
+                .then((res) => {
+                    console.log(res);
+                });
+        };
         return (
             <>
                 <RegisterWindow name="headerSlot">
@@ -83,6 +97,8 @@ export const Explorer = defineWindowComponent(
                                 pwd((i) => i + "/" + data.name);
                                 history.clear();
                                 folder.resetStack();
+                            } else if (data.isFile) {
+                                openFile(pwd() + "/" + data.name);
                             }
                         }
                     }}

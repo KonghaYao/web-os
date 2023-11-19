@@ -2,6 +2,7 @@ import { z } from "zod";
 import { publicProcedure, router } from "../t.js";
 import fs from "fs-extra";
 import path from "path";
+import { FastifyInstance } from "fastify/types/instance.js";
 
 /** 以分页的方式查看文件夹 */
 const viewDir = async (dir: string, query: { page: number; size: number }) => {
@@ -47,3 +48,12 @@ export const fileRouter = router({
             });
         }),
 });
+export default fileRouter;
+export const plugin = async (server: FastifyInstance) => {
+    server.get("/explorer/file", (connection, reply) => {
+        const path = connection.headers["x-path"] as string;
+        const stream = fs.createReadStream(path);
+        reply.header("Content-Type", "application/octet-stream");
+        reply.send(stream);
+    });
+};
