@@ -3,6 +3,7 @@ import { publicProcedure, router } from "../t.js";
 import fs from "fs-extra";
 import path from "path";
 import { FastifyInstance } from "fastify/types/instance.js";
+import { createHash } from "crypto";
 
 /** 以分页的方式查看文件夹 */
 const viewDir = async (dir: string, query: { page: number; size: number }) => {
@@ -49,11 +50,23 @@ export const fileRouter = router({
         }),
 });
 export default fileRouter;
+
+const eTagCache = new Map<string, string>();
 export const plugin = async (server: FastifyInstance) => {
     server.get("/explorer/file", (connection, reply) => {
         const path = connection.headers["x-path"] as string;
-        const stream = fs.createReadStream(path);
+        const etag = connection.headers["if-none-match"] as string;
         reply.header("Content-Type", "application/octet-stream");
-        reply.send(stream);
+        if (eTagCache.has(path) && eTagCache.get(path) === etag) {
+            reply.status(304);
+        } else {
+            const sha1Hash = fs
+                .createReadStream(path)
+                .pipe(createHash("sha1"))
+                .digest("hex");
+            eTagCache.set(path, sha1Hash);
+            reply.header("ETag", `"${sha1Hash}"`);
+            reply.send(fs.createReadStream(path));
+        }
     });
 };
